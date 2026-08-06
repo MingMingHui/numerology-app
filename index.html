@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NumeroLume — Discover Your Personal Numerology Profile</title>
+<meta name="description" content="A free, private numerology calculator. Discover your Life Path, Destiny, Soul Urge and 25+ other numbers with full calculation breakdowns, charts, and downloadable reports.">
+<meta name="theme-color" content="#0b1330">
+<link rel="icon" href="favicon.ico">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top">
+      <span class="brand-glyph" aria-hidden="true">✦</span>
+      <span class="brand-name">NumeroLume</span>
+    </a>
+    <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="mainNav" class="main-nav" aria-label="Primary">
+      <a href="#calculator">Calculator</a>
+      <a href="#results-section">Report</a>
+      <a href="#help">Help &amp; FAQ</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle light and dark theme" title="Toggle light/dark theme">
+        <span class="theme-icon">☾</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- ================= HERO ================= -->
+  <section id="top" class="hero">
+    <div class="hero-stars" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Pythagorean Numerology · Client-side · Private</p>
+      <h1 class="hero-title">Discover your personal<br><span class="hero-title-accent">numerology profile</span></h1>
+      <p class="hero-sub">Enter your name and birth date to reveal your Life Path, Destiny, Soul Urge, and over twenty-five
+        other numbers — each with a full calculation breakdown, plain-language interpretation, and beautiful visual report.
+        Everything runs in your browser; nothing is uploaded anywhere.</p>
+      <a href="#calculator" class="btn btn-primary btn-large">Begin your reading ↓</a>
+    </div>
+  </section>
+
+  <!-- ================= FORM ================= -->
+  <section id="calculator" class="calculator-section">
+    <div class="section-inner">
+      <h2>Your Details</h2>
+      <p class="section-lede">All calculations happen instantly on your device. Nothing is saved or sent anywhere except your browser's own local storage (used only so you can revisit your last result).</p>
+
+      <form id="numerology-form" novalidate>
+        <div id="form-errors" class="form-errors" role="alert" hidden></div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="firstName">First name <span class="required">*</span></label>
+            <input type="text" id="firstName" name="firstName" autocomplete="given-name" required>
+          </div>
+          <div class="form-field">
+            <label for="middleName">Middle name <span class="optional">(optional)</span></label>
+            <input type="text" id="middleName" name="middleName" autocomplete="additional-name">
+          </div>
+          <div class="form-field">
+            <label for="lastName">Last name <span class="required">*</span></label>
+            <input type="text" id="lastName" name="lastName" autocomplete="family-name" required>
+          </div>
+
+          <fieldset class="form-field form-field-date">
+            <legend>Full birth date <span class="required">*</span></legend>
+            <div class="date-row">
+              <div>
+                <label for="birthDay">Day</label>
+                <select id="birthDay" name="birthDay" required></select>
+              </div>
+              <div>
+                <label for="birthMonth">Month</label>
+                <select id="birthMonth" name="birthMonth" required>
+                  <option value="1">January</option><option value="2">February</option>
+                  <option value="3">March</option><option value="4">April</option>
+                  <option value="5">May</option><option value="6">June</option>
+                  <option value="7">July</option><option value="8">August</option>
+                  <option value="9">September</option><option value="10">October</option>
+                  <option value="11">November</option><option value="12">December</option>
+                </select>
+              </div>
+              <div>
+                <label for="birthYear">Year</label>
+                <input type="number" id="birthYear" name="birthYear" min="1875" max="2026" placeholder="e.g. 1990" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="form-field">
+            <label for="gender">Gender <span class="optional">(optional)</span></label>
+            <select id="gender" name="gender">
+              <option value="">Prefer not to say</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="nonbinary">Non-binary</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Calculate my numbers</button>
+          <button type="button" id="resetBtn" class="btn btn-ghost">Reset</button>
+          <button type="button" id="excelBtn" class="btn btn-secondary" disabled>⬇ Download Excel</button>
+          <button type="button" id="pdfBtn" class="btn btn-secondary" disabled>⬇ Download PDF</button>
+          <button type="button" id="printBtn" class="btn btn-secondary" disabled>🖨 Print Report</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS ================= -->
+  <section id="results-section" class="results-section" hidden>
+    <div id="report-root" class="section-inner">
+      <h2>Your Numerology Report</h2>
+      <div id="summary-container" class="summary-container"></div>
+
+      <div class="charts-grid">
+        <div class="chart-card"><canvas id="chart-radar" role="img" aria-label="Radar chart of core number balance"></canvas></div>
+        <div class="chart-card"><canvas id="chart-wheel" role="img" aria-label="Numerology wheel of letter distribution"></canvas></div>
+        <div class="chart-card"><canvas id="chart-cycles" role="img" aria-label="Line chart of personal year life cycle"></canvas></div>
+        <div class="chart-card"><canvas id="chart-energy" role="img" aria-label="Bar chart of plane of expression energy distribution"></canvas></div>
+      </div>
+
+      <div id="pyramid-container" class="pyramid-container"></div>
+
+      <div id="report-container" class="report-container"></div>
+
+      <p class="disclaimer">
+        <strong>Disclaimer:</strong> NumeroLume is provided for educational and entertainment purposes only.
+        Numerology is not a scientifically validated practice. This report should not replace professional
+        medical, legal, financial, or psychological advice, nor be used as the sole basis for major life decisions.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= HELP ================= -->
+  <section id="help" class="help-section">
+    <div class="section-inner">
+      <h2>Help &amp; FAQ</h2>
+
+      <div class="help-grid">
+        <article>
+          <h3>What is numerology?</h3>
+          <p>Numerology is the study of the symbolic meaning of numbers and their supposed influence on human life,
+          based on your birth date and the letters of your name. This app uses the <strong>Pythagorean system</strong>,
+          the most widely used method in the Western world, which assigns each letter of the alphabet a number from 1–9.</p>
+        </article>
+        <article>
+          <h3>How are the calculations done?</h3>
+          <p>Every number is built by summing digits or letter-values and reducing the result to a single digit
+          (1–9) — unless a <strong>Master Number</strong> (11, 22, 33, 44) appears, which is preserved for its
+          amplified significance. Every calculation in your report includes a full step-by-step breakdown so you
+          can verify the math yourself.</p>
+        </article>
+        <article>
+          <h3>What information should I enter?</h3>
+          <p>Use your full <strong>birth name</strong> exactly as it appeared on your birth certificate — not a
+          nickname or married name — for the most traditionally accurate reading. Enter your birth date exactly
+          as recorded, including the correct year.</p>
+        </article>
+        <article>
+          <h3>What are Master Numbers?</h3>
+          <p>11, 22, 33, and 44 are considered "Master Numbers" carrying heightened potential and challenge. They
+          are not reduced further during calculation (e.g. 29 → 2+9 = 11 stays at 11, not reduced to 2).</p>
+        </article>
+        <article>
+          <h3>What are Karmic Debt Numbers?</h3>
+          <p>13, 14, 16, and 19 are considered Karmic Debt numbers. When one of these appears as the very first
+          total in a calculation (before reducing), it points to a lesson carried over from a past pattern that
+          this lifetime is here to resolve.</p>
+        </article>
+        <article>
+          <h3>Is my data private?</h3>
+          <p>Yes. This entire application runs client-side in your browser. Your name and birth date are never
+          transmitted to any server — the only storage used is your browser's local storage, purely so you can
+          revisit your last report.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="section-inner footer-inner">
+    <p>NumeroLume — built with vanilla HTML, CSS &amp; JavaScript. Open source under the MIT License.</p>
+    <p class="footer-disclaimer">For educational and entertainment purposes only.</p>
+  </div>
+</footer>
+
+<!-- Third-party libraries (CDN, no build step required) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+<!-- App scripts -->
+<script src="numerology.js"></script>
+<script src="pyramid.js"></script>
+<script src="report.js"></script>
+<script src="excel.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
